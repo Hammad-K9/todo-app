@@ -5,6 +5,7 @@ const config = require('./utils/config');
 
 const app = express();
 
+const projectsRouter = require('./controllers/projects');
 const todosRouter = require('./controllers/todos');
 const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use(cors());
 app.use(middleware.requestLogger);
 
+app.use('/api/projects', projectsRouter);
 app.use('/api/todos', todosRouter);
 
 app.listen(config.PORT, () => {
