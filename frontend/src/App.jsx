@@ -3,20 +3,20 @@ import { useState, useEffect, createContext } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Content from './components/Content';
-import projectService from './services/projects';
+import todoAppService from './services/todoAppService';
 
 export const ProjectContext = createContext({});
 export const CurrentProjectContext = createContext({});
-export const TaskPopupContext = createContext({});
+export const TodoPopupContext = createContext({});
 
 export default function App() {
   const [projects, setProjects] = useState([]);
   const [currentProject, setCurrentProject] = useState(null);
-  const [isTaskPopup, setIsTaskPopup] = useState(false);
+  const [isTodoPopup, setIsTodoPopup] = useState(false);
 
   useEffect(() => {
     const getAllProjects = async () => {
-      const list = await projectService.getAll();
+      const list = await todoAppService.getAll('/api/projects');
       setProjects(list);
     };
     getAllProjects();
@@ -29,12 +29,12 @@ export default function App() {
         <CurrentProjectContext.Provider
           value={{ currentProject, setCurrentProject }}
         >
-          <TaskPopupContext.Provider value={{ isTaskPopup, setIsTaskPopup }}>
+          <TodoPopupContext.Provider value={{ isTodoPopup, setIsTodoPopup }}>
             <ProjectContext.Provider value={{ projects, setProjects }}>
               <Sidebar />
             </ProjectContext.Provider>
             <Content />
-          </TaskPopupContext.Provider>
+          </TodoPopupContext.Provider>
         </CurrentProjectContext.Provider>
       </main>
     </>

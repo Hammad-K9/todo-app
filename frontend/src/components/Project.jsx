@@ -21,11 +21,9 @@ export default function Project({
       ${isActive === project.id ? 'active' : ''}`}
       data-project={project.name}
       onClick={(e) => {
-        if (e.target.classList.contains('trash')) {
-          setCurrentProject(null);
-          return;
+        if (!e.target.classList.contains('trash')) {
+          selectProject(project);
         }
-        selectProject(project);
       }}
     >
       {symbolMapping[project.name] ? (
@@ -45,7 +43,10 @@ export default function Project({
             <span
               className="material-symbols-outlined trash"
               role="button"
-              onClick={() => deleteProject(project)}
+              onClick={() => {
+                setCurrentProject(null);
+                deleteProject(project);
+              }}
             >
               {' '}
               delete{' '}

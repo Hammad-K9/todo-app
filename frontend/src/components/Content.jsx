@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import AddTaskPopup from './AddTaskPopup';
-import { CurrentProjectContext, TaskPopupContext } from '../App';
+import AddTodoPopup from './AddTodoPopup';
+import { CurrentProjectContext, TodoPopupContext } from '../App';
 
 export default function Content() {
   const { currentProject } = useContext(CurrentProjectContext);
-  const { isTaskPopup, setIsTaskPopup } = useContext(TaskPopupContext);
+  const { isTodoPopup, setIsTodoPopup } = useContext(TodoPopupContext);
 
-  const addTask = () => {};
+  const addTodo = () => {};
 
   return (
     <div className="content">
@@ -15,17 +15,17 @@ export default function Content() {
           <div id="content-title">{currentProject}</div>
           {currentProject !== 'Today' && currentProject !== 'This Week' && (
             <button
-              className="tasks add-task-button"
-              onClick={() => setIsTaskPopup(true)}
+              className="todos add-todo-button"
+              onClick={() => setIsTodoPopup(true)}
             >
               <span className="material-symbols-outlined"> add </span>
-              <div className="add-task-button-text">Add Task</div>
+              <div className="add-todo-button-text">Add Todo</div>
             </button>
           )}
-          {isTaskPopup && (
-            <AddTaskPopup
-              addTask={addTask}
-              clickCancel={() => setIsTaskPopup(false)}
+          {isTodoPopup && (
+            <AddTodoPopup
+              addTodo={addTodo}
+              clickCancel={() => setIsTodoPopup(false)}
             />
           )}
         </>

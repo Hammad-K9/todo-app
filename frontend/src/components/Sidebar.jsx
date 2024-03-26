@@ -1,20 +1,21 @@
 import { useState, useContext } from 'react';
 import Project from './Project';
 import AddProjectPopup from './AddProjectPopup';
-import projectService from '../services/projects';
+import todoAppService from '../services/todoAppService';
 import {
   ProjectContext,
   CurrentProjectContext,
-  TaskPopupContext
+  TodoPopupContext
 } from '../App';
 
 export default function Sidebar() {
   const [isProjectPopup, setIsProjectPopup] = useState(false);
   const [isActive, setIsActive] = useState(null);
+  const [projectField, setProjectField] = useState('');
 
   const { projects, setProjects } = useContext(ProjectContext);
   const { setCurrentProject } = useContext(CurrentProjectContext);
-  const { setIsTaskPopup } = useContext(TaskPopupContext);
+  const { setIsTodoPopup } = useContext(TodoPopupContext);
 
   const [project1, project2, project3, ...otherProjects] = projects || [];
   const defaultProjects = [project1, project2, project3];
@@ -22,17 +23,20 @@ export default function Sidebar() {
   const selectProject = (project) => {
     setIsActive(project.id);
     setCurrentProject(project.name);
-    setIsTaskPopup(false);
+    setIsTodoPopup(false);
   };
 
-  const addProject = async (e) => {
-    const p = await projectService.create({ name: e.target.inputName.value });
-    setProjects([...projects, p]);
+  const addProject = async () => {
     setIsProjectPopup(false);
+    const p = await todoAppService.create('/api/projects', {
+      name: projectField
+    });
+    setProjects([...projects, p]);
   };
 
   const deleteProject = async (project) => {
-    await projectService.deleteProject(project.id);
+    setIsActive(null);
+    await todoAppService.deleteItem('/api/projects', project.id);
     setProjects(projects.filter((p) => p.id !== project.id));
   };
 
@@ -70,6 +74,8 @@ export default function Sidebar() {
         <AddProjectPopup
           addProject={addProject}
           clickCancel={() => setIsProjectPopup(false)}
+          projectField={projectField}
+          handleChange={(e) => setProjectField(e.target.value)}
         />
       )}
     </div>
