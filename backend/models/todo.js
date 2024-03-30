@@ -5,13 +5,13 @@ const todoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  complete: {
-    type: Boolean,
-    default: false
+  description: {
+    type: String,
+    default: ''
   },
   date: {
     type: String,
-    default: Date.now()
+    default: ''
   }
 });
 
