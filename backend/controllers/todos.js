@@ -1,4 +1,5 @@
 const todosRouter = require('express').Router();
+const Project = require('../models/Project');
 const Todo = require('../models/Todo');
 const middleware = require('../utils/middleware');
 
@@ -8,11 +9,14 @@ todosRouter.get('/', async (req, res) => {
 });
 
 todosRouter.post('/', async (req, res) => {
-  const { body } = req;
+  const { projectId, ...body } = req.body;
 
+  const project = await Project.findById(projectId);
   const todo = new Todo({ ...body });
 
   const savedTodo = await todo.save();
+  project.todos = [...project.todos, savedTodo._id];
+  await project.save();
   res.status(201).json(savedTodo);
 });
 
