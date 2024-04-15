@@ -6,7 +6,6 @@ import Content from './components/Content';
 import todoAppService from './services/todoAppService';
 
 export const ProjectContext = createContext({});
-export const CurrentProjectContext = createContext({});
 export const TodoPopupContext = createContext({});
 
 export default function App() {
@@ -26,16 +25,14 @@ export default function App() {
     <>
       <Header />
       <main>
-        <CurrentProjectContext.Provider
-          value={{ currentProject, setCurrentProject }}
+        <ProjectContext.Provider
+          value={{ projects, setProjects, currentProject, setCurrentProject }}
         >
           <TodoPopupContext.Provider value={{ isTodoPopup, setIsTodoPopup }}>
-            <ProjectContext.Provider value={{ projects, setProjects }}>
-              <Sidebar />
-            </ProjectContext.Provider>
+            <Sidebar />
             <Content />
           </TodoPopupContext.Provider>
-        </CurrentProjectContext.Provider>
+        </ProjectContext.Provider>
       </main>
     </>
   );

@@ -2,19 +2,15 @@ import { useState, useContext } from 'react';
 import Project from './Project';
 import AddProjectPopup from './AddProjectPopup';
 import todoAppService from '../services/todoAppService';
-import {
-  ProjectContext,
-  CurrentProjectContext,
-  TodoPopupContext
-} from '../App';
+import { ProjectContext, TodoPopupContext } from '../App';
 
 export default function Sidebar() {
   const [isProjectPopup, setIsProjectPopup] = useState(false);
   const [isActive, setIsActive] = useState(null);
   const [projectField, setProjectField] = useState('');
 
-  const { projects, setProjects } = useContext(ProjectContext);
-  const { setCurrentProject } = useContext(CurrentProjectContext);
+  const { projects, setProjects, setCurrentProject } =
+    useContext(ProjectContext);
   const { setIsTodoPopup } = useContext(TodoPopupContext);
 
   const [project1, project2, project3, ...otherProjects] = projects || [];
@@ -22,12 +18,13 @@ export default function Sidebar() {
 
   const selectProject = (project) => {
     setIsActive(project.id);
-    setCurrentProject(project.name);
+    setCurrentProject(project);
     setIsTodoPopup(false);
   };
 
   const addProject = async () => {
     setIsProjectPopup(false);
+    setProjectField('');
     const p = await todoAppService.create('/api/projects', {
       name: projectField
     });

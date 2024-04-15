@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CurrentProjectContext } from '../App';
+import { ProjectContext } from '../App';
 
 export default function Project({
   project,
@@ -13,7 +13,7 @@ export default function Project({
     Today: 'calendar_today',
     'This Week': 'event'
   };
-  const { setCurrentProject } = useContext(CurrentProjectContext);
+  const { setCurrentProject } = useContext(ProjectContext);
 
   return (
     <button

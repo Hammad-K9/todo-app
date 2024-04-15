@@ -1,15 +1,30 @@
-export default function AddTodoPopup({ addTodo, clickCancel }) {
+export default function AddTodoPopup(props) {
   return (
-    <form className="add-todo-form" onSubmit={addTodo}>
+    <form className="add-todo-form" onSubmit={props.addTodo}>
       <label htmlFor="todo-name">Todo Name: </label>
-      <input id="todo-name" required />
+      <input
+        id="todo-name"
+        value={props.todoText}
+        onChange={props.handleTodoTextChange}
+        required
+      />
       <label htmlFor="todo-description">Description (Optional): </label>
-      <textarea rows="4" cols="50" />
+      <textarea
+        rows="4"
+        cols="50"
+        value={props.todoDesc}
+        onChange={props.handleTodoDescChange}
+      />
       <label htmlFor="todo-date">Date: </label>
-      <input type="date" id="todo-date" />
+      <input
+        type="date"
+        id="todo-date"
+        value={props.todoDate}
+        onChange={props.handleTodoDateChange}
+      />
       <div className="add-cancel-buttons">
         <button className="submit">Add</button>
-        <button className="cancel" type="button" onClick={clickCancel}>
+        <button className="cancel" type="button" onClick={props.clickCancel}>
           Cancel
         </button>
       </div>

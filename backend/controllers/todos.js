@@ -1,7 +1,6 @@
 const todosRouter = require('express').Router();
 const Project = require('../models/Project');
 const Todo = require('../models/Todo');
-const middleware = require('../utils/middleware');
 
 todosRouter.get('/', async (req, res) => {
   const todos = await Todo.find({});
@@ -17,12 +16,20 @@ todosRouter.post('/', async (req, res) => {
   const savedTodo = await todo.save();
   project.todos = [...project.todos, savedTodo._id];
   await project.save();
+
+  let updatedProjectIds = [project._id];
+
   if (project.name !== 'Inbox') {
     const inbox = await Project.findOne({ name: 'Inbox' });
     inbox.todos = [...inbox.todos, savedTodo._id];
     await inbox.save();
+    updatedProjectIds = [...updatedProjectIds, inbox._id];
   }
-  res.status(201).json(savedTodo);
+
+  const updatedProjects = await Project.find({
+    _id: { $in: updatedProjectIds }
+  }).populate('todos', { name: 1 });
+  res.status(201).json({ updatedProjects, savedTodo });
 });
 
 todosRouter.delete('/:id', async (req, res) => {

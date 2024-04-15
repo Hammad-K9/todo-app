@@ -2,7 +2,7 @@ const projectsRouter = require('express').Router();
 const Project = require('../models/Project');
 
 projectsRouter.get('/', async (req, res) => {
-  const projects = await Project.find({}).populate('todos', { text: 1 });
+  const projects = await Project.find({}).populate('todos', { name: 1 });
   res.json(projects);
 });
 
