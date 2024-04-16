@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import AddTodoPopup from './AddTodoPopup';
 import { ProjectContext, TodoPopupContext } from '../App';
+import Todo from './Todo';
 import todoAppService from '../services/todoAppService';
 
 export default function Content() {
@@ -15,6 +16,9 @@ export default function Content() {
 
   const addTodo = async () => {
     setIsTodoPopup(false);
+    setTodoText('');
+    setTodoDesc('');
+    setTodoDate('');
     const { updatedProjects } = await todoAppService.create('/api/todos', {
       name: todoText,
       description: todoDesc,
@@ -34,26 +38,31 @@ export default function Content() {
     );
   };
 
+  const cancelTodoForm = () => {
+    setIsTodoPopup(false);
+    setTodoText('');
+    setTodoDesc('');
+    setTodoDate('');
+  };
+
+  const deleteTodo = async (todo) => {
+    await todoAppService.deleteItem('/api/todos', todo.id);
+    setProjects(
+      projects.map((p) => {
+        p.todos = p.todos.filter((t) => t.id.toString() !== todo.id.toString());
+        return p;
+      })
+    );
+    setCurrentProject(projects.find((p) => p.name === currentProject.name));
+  };
+
   return (
     <div className="content">
       {currentProject && (
         <>
           <div id="content-title">{currentProject.name}</div>
           {currentProject.todos.map((t) => (
-            <button key={t.id} className="tasks">
-              <div className="top">
-                <div className="left-side">
-                  <span className="material-symbols-outlined check">
-                    radio_button_unchecked
-                  </span>
-                  <div className="task-text">{t.name}</div>
-                </div>
-                <div className="right-side">
-                  <div className="task-date">{t.date}</div>
-                </div>
-              </div>
-              <div className="task-description">{t.description}</div>
-            </button>
+            <Todo key={t.id} todo={t} deleteTodo={deleteTodo} />
           ))}
           {currentProject.name !== 'Today' &&
             currentProject.name !== 'This Week' && (
@@ -68,7 +77,7 @@ export default function Content() {
           {isTodoPopup && (
             <AddTodoPopup
               addTodo={addTodo}
-              clickCancel={() => setIsTodoPopup(false)}
+              clickCancel={cancelTodoForm}
               todoText={todoText}
               handleTodoTextChange={(e) => setTodoText(e.target.value)}
               todoDesc={todoDesc}
