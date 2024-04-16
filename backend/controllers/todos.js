@@ -28,7 +28,7 @@ todosRouter.post('/', async (req, res) => {
 
   const updatedProjects = await Project.find({
     _id: { $in: updatedProjectIds }
-  }).populate('todos', { name: 1 });
+  }).populate('todos', {});
   res.status(201).json({ updatedProjects, savedTodo });
 });
 

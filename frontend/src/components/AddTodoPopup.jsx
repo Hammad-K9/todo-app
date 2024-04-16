@@ -12,10 +12,11 @@ export default function AddTodoPopup(props) {
       <textarea
         rows="4"
         cols="50"
+        id="todo-description"
         value={props.todoDesc}
         onChange={props.handleTodoDescChange}
       />
-      <label htmlFor="todo-date">Date: </label>
+      <label htmlFor="todo-date">Date (Optional): </label>
       <input
         type="date"
         id="todo-date"

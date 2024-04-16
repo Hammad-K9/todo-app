@@ -1,6 +1,6 @@
 export default function Todo({ todo, deleteTodo }) {
   return (
-    <button key={todo.id} className="tasks">
+    <button className="todos">
       <div className="top">
         <div className="left-side">
           <span
@@ -10,13 +10,13 @@ export default function Todo({ todo, deleteTodo }) {
           >
             radio_button_unchecked
           </span>
-          <div className="task-text">{todo.name}</div>
+          <div className="todo-text">{todo.name}</div>
         </div>
         <div className="right-side">
-          <div className="task-date">{todo.date}</div>
+          <div className="todo-date">{todo.date}</div>
         </div>
       </div>
-      <div className="task-description">{todo.description}</div>
+      <div className="todo-description">{todo.description}</div>
     </button>
   );
 }

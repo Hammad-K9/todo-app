@@ -16,6 +16,7 @@ export default function Content() {
 
   const addTodo = async () => {
     setIsTodoPopup(false);
+
     setTodoText('');
     setTodoDesc('');
     setTodoDate('');
@@ -49,7 +50,7 @@ export default function Content() {
     await todoAppService.deleteItem('/api/todos', todo.id);
     setProjects(
       projects.map((p) => {
-        p.todos = p.todos.filter((t) => t.id.toString() !== todo.id.toString());
+        p.todos = p.todos.filter((t) => t.id !== todo.id);
         return p;
       })
     );
