@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf dist && cd ../frontend/ && npm run build && cp -r dist ../backend",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs"
   },
   "eslintConfig": {
     "extends": [
@@ -34,7 +38,6 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
-    "date-fns-tz": "^3.1.2",
     "dotenv": "^16.4.5",
     "eslint-config-wesbos": "^4.0.1",
     "express": "^4.19.1",
@@ -42,6 +45,7 @@
     "mongoose": "^8.2.2"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.5",
     "nodemon": "^3.1.0"
   }
 }

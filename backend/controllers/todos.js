@@ -57,13 +57,4 @@ todosRouter.delete('/:id', async (req, res) => {
   res.status(204).end();
 });
 
-todosRouter.put('/:id', async (req, res) => {
-  const todo = { ...req.body };
-
-  const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, todo, {
-    new: true
-  });
-  res.json(updatedTodo);
-});
-
 module.exports = todosRouter;
